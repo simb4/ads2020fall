@@ -8,104 +8,133 @@ using namespace std;
 
 struct node {
 	int val;
-	node *nxt;
-	node() { val = 0; }
-	node(int x) { val = x; }
+	node *nxt, *prev;
+	node() { val = 0, nxt = NULL; }
+	node(int x) { val = x, nxt = NULL; }
 };
 
 struct list {
-	node* head;
+	node* head = NULL;
 
 	node* get(int p) {
+		if (p < 0) {
+			cout << "[Error] Index out of bounds (get)\n";
+			exit(0);
+		}
 		node *cur = head;
 		for (int i = 0; i < p && cur != NULL; i++)
 			cur = cur->nxt;
 		return cur;
 	}
 
-	void append(int x) { // add to the end
-		node *cur = head;
+	node* get_tail() {
+		if (head == NULL) {
+			cout << "[Error] the list has no tail\n";
+			exit(0);
+			return NULL;
+		}
+		node *tail = head;
+		while (tail->nxt != NULL)
+			tail = tail->nxt;
+		return tail;
+	}
 
+	void append(int x) { // add to the end
 		if (head == NULL) {
 			head = new node(x);
 			return;
 		}
-		
-		/* go to the next, until there is next */
-		while (cur->nxt != NULL)
-			cur = cur->nxt;
-
-		cur->nxt = new node(x); // new node(x) returns node*
+		node *tail = get_tail();
+		tail->nxt = new node(x);
 	}
 
-	void out() { // void out(...; this) in python ~ self
+	void insert(int p, int x) { // list.get(p).val == x at the end
+		if (p < 0) {
+			cout << "[Error] negative index (insert)\n";
+			exit(0);
+		}
+		if (p == 0) {
+			node *newNode = new node(x);
+			newNode->nxt = head;
+			head = newNode;
+			return;
+		}
+		node *prev = get(p - 1);
+		if (prev == NULL) {
+			cout << "[Error] index out of bounds (insert)\n";
+			exit(0);
+		}
+		node *newNode = new node(x);
+		newNode->nxt = prev->nxt;
+		prev->nxt = newNode;
+	}
+
+	void del(int p) {
+		if (p < 0 || head == NULL) {
+			cout << "[Error] delete error\n";
+			exit(0);
+		}
+		if (p == 0) {
+			node *tmp = head;
+			head = head->nxt;
+			delete tmp;
+			return;
+		}
+		node *cur = get(p-1);
+		node *toDel = cur->nxt;
+		if (cur == NULL || toDel == NULL) {
+			cout << "[Error] index out of bounds (delete)\n";
+			exit(0);
+		}
+		cur->nxt = toDel->nxt;
+		delete toDel;
+	}
+
+	void out() {
 		node *cur = head;
-		while(cur != NULL) {
+		while (cur != NULL) {
 			cout << cur->val << " ";
 			cur = cur->nxt;
 		}
 		cout << "\n";
 	}
 
-	void del(int p) {
-		node *cur = head;
-		if (p == 0) {
-			head = head->nxt;
-			delete cur;
-			return;
-		}
-		/* go to the next, until there is next */
-		cur = get(p-1);
+	void eraseAll(int x) { // aim : O(n) - linear time
 
-		node *todel = cur->nxt;
-		cur->nxt = todel->nxt;
-		delete todel;
-	}
-
-	void insert(int p, int x) {
-		/* it was: a1,a2,...,a[p], a[p+1] */
-		/* turn to: a1,a2,...,a[p-1], x, a[p], a[p+1] */
-		node* newNode = new node(x);
-		if (p == 0) {
-			newNode->nxt = head;
-			head = newNode;
-			return;
-		}
-		node *cur = get(p-1);
-		if (cur == NULL) {
-			cerr << "My error: index out of bounds\n";
-			return;
-		}
-		newNode->nxt = cur->nxt;
-		cur->nxt = newNode;
 	}
 };
 
 
-int a[100];
+void reverse(list *L) {	// aim : O(n) = linear time algorithm
+
+}
 
 int main() {
+
 	list* L = new list();
+	list* R = L;
 
 	L->append(10);
 	L->append(5);
-	L->append(6);
-	L->append(2);
-	L->append(4);
+	R->append(6);
+	R->append(7);
+	L->out();
+	L->insert(1, 4);
+	L->out();
+	L->insert(0, 3);
+	L->out();
+	L->insert(6, 8);
+	L->out();
+
+	L->del(1);
 	L->out();
 	L->del(0);
 	L->out();
-	L->del(2);
-	L->out();
-	L->insert(0, 1);
-	L->out();
-	L->insert(2, 3);
+	L->del(4);
 	L->out();
 
-	L->insert(10, 3);
 
-
-
+	
 	return 0;
 }
 
