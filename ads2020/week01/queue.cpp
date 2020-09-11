@@ -40,16 +40,16 @@ bool empty() {
 	return start == tail;
 }
 
-
-
 int main() {
 
 	push_back(2);
 	push_back(3);
 	push_back(5);
+	// 2 3 5
 	cout << front() << "\n";
 	cout << back() << "\n";
 	pop_front();
+	// 3 5
 	cout << front() << "\n";
 	cout << size() << "\n";
 

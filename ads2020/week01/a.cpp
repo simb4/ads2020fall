@@ -19,37 +19,39 @@ void gcd_example() {
 	cout << gcd(a, b) << "\n";
 }
 
-char marked[1000];
+bool crossed[1000];
+
 void eratosphen_example() {
 	int n;
 	cin >> n;
-	marked[1] = 1;
+	crossed[1] = true;
 	for (int i = 2; i <= n; i++) {
-		if (!marked[i]) { // true -> !true = false
-			// then i is prime
-			for (int j = i + i; j <= n; j += i)
-				marked[j] = 1;
+		if (!crossed[i]) { // not crossed
+			// i is prime
+			for (int j = 2 * i; j <= n; j += i)
+				crossed[j] = true;
 		}
 	}
-
-	cout << "Primes: ";
+	cout << "Primes:\n";
 	for (int i = 1; i <= n; i++)
-		if (!marked[i])
-			cout << i << ' ';
-	cout << "\n";
+		if (!crossed[i])
+			cout << i << "\n";
+
+
 }
 
 int binpow(int a, int n, int mod) {
 	if (n == 0) return 1;
 	if (n == 1) return a;
-
-	int a2 = binpow(a, n / 2, mod);
-	long long sqra = (long long)a2 * a2 % mod;
-	if (n % 2 == 0) return sqra;
-	return sqra * a % mod;
+	// a^n = (a^{n/2})^2 * a^{n%2}
+	int ahalf = binpow(a, n/2, mod);
+	long long sqr = ahalf * ahalf % mod;
+	if (n % 2 == 0) return sqr % mod;
+	return sqr * a % mod;
+	// WARN: mod can be of order 10^9
 }
 
-void binpow_example() {
+void binpow_example() {	
 	int a, b, mod;
 	cin >> a >> b >> mod;
 	cout << binpow(a, b, mod) << "\n";
@@ -57,8 +59,8 @@ void binpow_example() {
 
 int main() {
 
-
-	binpow_example();
+	eratosphen_example();
+	// binpow_example();
 
 
 
