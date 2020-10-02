@@ -7,7 +7,7 @@
 #define f first
 #define s second
 using namespace std;
-const int N = (int)1e5 + 5;
+const int N = (int)3e5 + 5;
 
 int n, a[N];
 
