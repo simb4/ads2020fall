@@ -13,28 +13,25 @@ int n, a[N];
 
 int get(int l, int r) {
     if (l > r) return 0;
-    // # number of an array a: l <= a[i] <= r
-    int L = lower_bound(a, a + n, l) - a;
-    // mostleft index of i: l <= a[i] 
-    int R = upper_bound(a, a + n, r) - a;
-    // mostleft index of i: r < a[i]
-    return R - L;
+    int il = lower_bound(a, a + n, l) - a;
+    // mostleft index i: l <= a[i]
+    int ir = upper_bound(a, a + n, r) - a;
+    // mostleft index i: r > a[i]
+    return ir - il;
 }
-
 
 int main() {
     int q;
     scanf("%d %d", &n, &q);
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++) {
         scanf("%d", &a[i]);
+    }
     sort(a, a + n);
-
-    for (int i = 1; i <= q; i++) {
-        int l1,r1,l2,r2;
+    for (int i = 0; i < q; i++) {
+        int l1, r1, l2, r2;
         scanf("%d %d %d %d", &l1, &r1, &l2, &r2);
         int lc = max(l1, l2);
         int rc = min(r1, r2);
-
         int ans = get(l1, r1) + get(l2, r2) - get(lc, rc);
         printf("%d\n", ans);
     }

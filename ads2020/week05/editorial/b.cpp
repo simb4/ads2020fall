@@ -23,7 +23,7 @@ void add(int x) {
 }
 
 void rev() {
-    reversed = !reversed;
+   reversed = !reversed; // T -> F, F -> T
 }
 
 void out() {
@@ -33,7 +33,7 @@ void out() {
             d.pop_front();
         }
     } else {
-        while(!d.empty()) {
+        while (!d.empty()) {
             cout << d.back() << " ";
             d.pop_back();
         }

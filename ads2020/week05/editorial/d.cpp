@@ -19,7 +19,7 @@ int main() {
         scanf("%d %d %d %d", &x1, &y1, &x2, &y2);
         a[i] = max(x2, y2);
     }
-    sort(a, a + n);
+    sort(a, a + n);;
     printf("%d\n", a[k-1]);
 
 

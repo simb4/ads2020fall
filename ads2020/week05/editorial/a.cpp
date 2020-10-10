@@ -15,24 +15,33 @@ struct Node {
 
 // your code goes here
 
-Node* get(Node* cur, int k) {
-    /* k-th element of linked list */
-    if (k == 0) return cur;
-    if (cur->next == NULL) return cur;
-    return get(cur->next, k - 1);
+Node* get(node* cur, int k) {
+    while (k > 0 && cur->next != NULL) {
+        k--;
+        cur = cur->next;
+    }
+    return cur;
 }
+node* get_recursive(node* cur, int k) {
+    if (k == 0) return cur;
+    if (cur->next == NULL) {// if it is tail 
+        return cur;
+    }
+    return get_recursive(cur->next, k - 1);
+}
+
+const int LARGE_NUMBER = (int)1e9;
 
 Node* cyclicShift(Node* head, int k) {
-    Node* last = get(head, (int)1e9); // 10^9 = inf
-    last->next = head;
-
-    Node* newLast = get(head, k-1);
-    Node* newHead = newLast->next;
-    newLast->next = NULL;
-
-    return newHead;
+    Node *newtail = get(head, k-1);
+    Node *newhead = newtail->next;
+    newtail->next = NULL;
+    
+    Node *tail = get(head, LARGE_NUMBER);
+    tail->next = head;
+    return newhead;
 }
-
+    
 void print(Node* head) {
     Node* cur = head;
     while (cur != NULL) {
