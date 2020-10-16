@@ -58,6 +58,10 @@ void build() {
         heapify_down(i);
 }
 
+void heap_sort() {
+    build(); // build from array
+}
+
 int main() {
 
     int q, x;
