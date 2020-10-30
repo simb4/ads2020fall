@@ -15,29 +15,24 @@ typedef vector<int> vi;
 typedef vector<pii> vii;
 typedef long long ll;
 const int N = (int)1e5 + 5;
+
+
 int n, a[N], tmp[N];
 
 void merge(int *a, int n, int *b, int m, int *c) {
-    int l = 1; // pointer to left part
-    int r = 1; // pointer to right part
-    int k = 0; // pointer to common array
-
-    while (l <= n || r <= m) { // can be replaced with for loop (1..n+m)
+    int l = 1, r = 1, k = 0;
+    while (l <= n || r <= m) {
         if (l <= n && r <= m) {
-            // comparing 2 candidates
             if (a[l] <= b[r])
                 tmp[++k] = a[l], l++;
             else
                 tmp[++k] = b[r], r++;
-            
         } else if (l > n) {
             tmp[++k] = b[r], r++;
         } else { // r > m
             tmp[++k] = a[l], l++;
         }
     }
-
-    // at the end k == n + m
     for (int i = 1; i <= k; i++)
         c[i] = tmp[i];
 }
@@ -45,30 +40,36 @@ void merge(int *a, int n, int *b, int m, int *c) {
 void merge_sort(int *a, int n) {
     // a[1],a[2],...,a[n]
     if (n == 1) return;
-    // split into 2 parts
-    int m = (n + 1) / 2; // n/2 - floor of (n/2), (n+1)/2 - ceil of (n/2)
-    
-    // sort left part [1, ceil(n/2)]: a[1],...,a[m]
+    int m = (n + 1) / 2;
     merge_sort(a, m);
-
-    // sort right part [ceil(n/2) + 1, n]: a[m+1],...,a[n]
     merge_sort(a + m, n - m);
-    
-    // merge 2 parts
     merge(a, m, a + m, n - m, a);
+}
+
+void out(int l, int r, int *a) {
+    // [l    ] mid [    r]
+    int mid = (l + r) / 2;
+    printf("%d ", a[mid]);
+    if (l != r) {
+        out(l, mid - 1, a);
+        out(mid + 1, r, a);
+    }
 }
 
 int main() {
 
 
     scanf("%d", &n);
-    for (int i = 1; i <= n; i++) {
+    int N = (1 << n) - 1;
+    for (int i = 1; i <= N; i++) {
         scanf("%d", a + i);
     }
-    merge_sort(a, n);
-    for (int i = 1; i <= n; i++)
-        printf("%d ", a[i]);
+    merge_sort(a, N);
+
+    out(1, N, a);
     puts("");
+
+
 
     return 0;
 }

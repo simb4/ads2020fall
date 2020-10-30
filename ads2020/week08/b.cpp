@@ -15,9 +15,21 @@ typedef vector<int> vi;
 typedef vector<pii> vii;
 typedef long long ll;
 const int N = (int)1e5 + 5;
-int n, a[N], tmp[N];
 
-void merge(int *a, int n, int *b, int m, int *c) {
+struct date {
+    int m, d, y;
+
+    bool operator < (date D) {
+        if (y != D.y) return y < D.y;
+        if (d != D.d) return d < D.d;
+        return m < D.m;
+    }
+};
+
+int n;
+date a[N], tmp[N];
+
+void merge(date *a, int n, date *b, int m, date *c) {
     int l = 1; // pointer to left part
     int r = 1; // pointer to right part
     int k = 0; // pointer to common array
@@ -25,7 +37,7 @@ void merge(int *a, int n, int *b, int m, int *c) {
     while (l <= n || r <= m) { // can be replaced with for loop (1..n+m)
         if (l <= n && r <= m) {
             // comparing 2 candidates
-            if (a[l] <= b[r])
+            if (a[l] < b[r])
                 tmp[++k] = a[l], l++;
             else
                 tmp[++k] = b[r], r++;
@@ -42,7 +54,7 @@ void merge(int *a, int n, int *b, int m, int *c) {
         c[i] = tmp[i];
 }
 
-void merge_sort(int *a, int n) {
+void merge_sort(date *a, int n) {
     // a[1],a[2],...,a[n]
     if (n == 1) return;
     // split into 2 parts
@@ -63,12 +75,18 @@ int main() {
 
     scanf("%d", &n);
     for (int i = 1; i <= n; i++) {
-        scanf("%d", a + i);
+        scanf("%d%d%d", &a[i].m, &a[i].d, &a[i].y);
     }
+
     merge_sort(a, n);
+
     for (int i = 1; i <= n; i++)
-        printf("%d ", a[i]);
+        printf("%d %d %d\n", a[i].m, a[i].d, a[i].y);
+    
     puts("");
+
+    // sort(a, a + n, cmp);
+    /* bool cmp(date d1, date d2); return is d1 < d2? */
 
     return 0;
 }

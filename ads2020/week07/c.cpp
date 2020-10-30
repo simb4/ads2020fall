@@ -8,8 +8,8 @@ int partion(int *a, int n) {
 	// take random index [0,n)
 	// and put random pivot at last position
 	
-	// int rnd_ind = rand() % n;
-	// swap(a[rnd_ind], a[n - 1]);
+	int rnd_ind = rand() % n;
+	swap(a[rnd_ind], a[n - 1]);
 	int pivot = a[n - 1];
 	
 	int i = 0;

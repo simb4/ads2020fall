@@ -17,13 +17,13 @@ void heapify_down(int *a, int n, int v) {
         heapify_down(a, n, cand);
 }
 
+int get_max(int *a, int n) {
+    return a[1];
+}
 
-int remove_max(int *a, int &n) {
-    int mx = a[1];
-    swap(a[1], a[n]);
-    n--;
+void decr_max(int *a, int n) {
+    a[1]--;
     heapify_down(a, n, 1);
-    return mx;
 }
 
 void build_heap(int *a, int n) {
@@ -31,27 +31,26 @@ void build_heap(int *a, int n) {
             heapify_down(a, n, i);
 }
 
-void heap_sort(int *a, int n) {
-    build_heap(a, n); // build heap from arbitrary array
-
-    while(n > 0)
-        remove_max(a, n);
-}
 
 
-int b[N], m;
+int a[N], n, x;
 
 int main() {
 
-    cin >> m;
-    for (int i = 1; i <= m; i++)
-        cin >> b[i];
+    cin >> n >> x;
+    for (int i = 1; i <= n; i++)
+        cin >> a[i];
 
-    heap_sort(b, m);
+    build_heap(a, n);
 
-    for (int i = 1; i <= m; i++)
-        cout << b[i] << ' ';
-    cout << "\n";
+    long long ans = 0;
+    for (int i = 1; i <= x; i++) {
+        int mx = get_max(a, n);
+        decr_max(a, n);
+        ans += mx;
+    }
+    cout << ans << "\n";
+
 
         
     return 0;
