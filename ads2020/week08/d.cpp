@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+    #include <bits/stdc++.h>
 #include <chrono>
 #include <cassert>
 #include <typeinfo>
@@ -47,7 +47,7 @@ int main() {
             prod = mx1 * 1ll * mx2 * mx3; // 10^18
         }
         printf("%lld\n", prod);
-    }
+    }   
     
 
     return 0;

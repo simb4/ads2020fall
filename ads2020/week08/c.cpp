@@ -34,14 +34,13 @@ int main() {
     }
     cout << "\n";
 
-    // for (int i = 0; i < n; i++)
-    //     cnt[s[i] - 'a']++;
+    for (int i = 0; i < n; i++) // O(Sigma)
+        cnt[s[i] - 'a']++;
 
-    // for (int i = 0; i < 26; i++)
-    //     while (s[ord[i]-'a']--) cout << (char)('a' + i);
+    for (int i = 0; i < 26; i++) // O(sigma + n)
+        for (int j = 0; j < cnt[ord[i]]; j++)
+            cout << (char)('a' + i);
 
-
-    
 
     return 0;
 }

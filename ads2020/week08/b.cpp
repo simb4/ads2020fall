@@ -21,8 +21,8 @@ struct date {
 
     bool operator < (date D) {
         if (y != D.y) return y < D.y;
-        if (d != D.d) return d < D.d;
-        return m < D.m;
+        if (m != D.m) return m < D.m;
+        return d < D.d;
     }
 };
 
@@ -75,13 +75,13 @@ int main() {
 
     scanf("%d", &n);
     for (int i = 1; i <= n; i++) {
-        scanf("%d%d%d", &a[i].m, &a[i].d, &a[i].y);
+        scanf("%d%d%d", &a[i].d, &a[i].m, &a[i].y);
     }
 
     merge_sort(a, n);
 
     for (int i = 1; i <= n; i++)
-        printf("%d %d %d\n", a[i].m, a[i].d, a[i].y);
+        printf("%d %d %d\n", a[i].d, a[i].m, a[i].y);
     
     puts("");
 
