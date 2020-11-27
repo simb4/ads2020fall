@@ -16,40 +16,82 @@ typedef vector<pii> vii;
 typedef long long ll;
 const int N = (int)105;
 
+const int R = 0;
+const int U = 1;
+const int L = 2;
+const int D = 3;
+int dx[4] = {1, 0, -1, 0};
+int dy[4] = {0, 1, 0, -1};
+int ddd[300];
+
+
+struct person {
+    ll x, y;
+    int d;
+} p[N];
+
 int n;
-int a[N][N];
-vector<int> g[N]; // array of vectors
+int dist(int a, int b) {
+    return abs(p[a].x - p[b].x) + abs(p[a].y - p[b].y);
+}
 
-int was[N];
+typedef pair<int, pair<pii, pii> > event;
+vector<event> pr;
 
-void dfs(int v) {
-    was[v] = 1;
-    for (int u : g[v]) { // iterate over the neighbours
-        if (!was[u]) {
-            dfs(u);
-        }
+ll meet(int a, int b) {
+    if (p[a].y > p[b].y) swap(a, b);
+    if (p[a].y == p[b].y) {
+        if (p[a].x > p[b].x) swap(a, b);
+        // a < b
+        if (p[a].d == R && p[b].d == L)
+            return (p[a].x + p[b].x) / 2;
+        return -1;
     }
+    if (p[a].d != U || p[b].d != D)
+        return -1;
+    ll deltax = p[b].x - p[a].x;
+    ll deltay = p[b].y - p[a].y;
+    if (abs(deltax) != abs(deltay))
+        return -1;
+
+    if (p[a].d == U) {
+        if ((deltax > 0 && p[b].d == L) || (deltax < 0 && p[b].d == R))
+            return abs(deltax);
+        return -1;
+    } else { // p[b].d 
+        if (deltax > 0 && p[b].d)
+    }
+
 }
 
 int main() {
+    ddd['e'] = 0;
+    ddd['n'] = 1;
+    ddd['w'] = 2;
+    ddd['s'] = 3;
 
-    cin >> n;
-    for (int i = 1; i <= n; i++)
-        for (int j = 1; j <= n; j++)
-            cin >> a[i][j];
-
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= n; j++)
-            if (a[i][j]) {
-                g[i].push_back(j);
-            }
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        char c;
+        scanf("%d %d %c", &p[i].x, &p[i].y, &c);
+        p[i].x *= 2;
+        p[i].y *= 2;
+        p[i].d = ddd[c];
     }
-    for (int i = 1; i <= n; i++) {
-        for (int j : g[i])
-            if (i < j) {
-                cout << i << ' ' << j << "\n";
+    for (int i = 0; i < n; i++)
+        for (int j = i + 1; j < n; j++) {
+            int t = meet(i, j);
+            if (t != -1) {
+                pii meetp = mp(p[i].x + dx[p[i].d] * t, p[i].y + dy[p[i].d] * t);
+                pr.pb(event(
+                    mp(t,
+                        mp(
+                            meetp,
+                            mp(i, j)
+                        )
+                    )));
             }
-    }
+        }
 
 
     return 0;

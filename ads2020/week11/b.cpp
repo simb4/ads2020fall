@@ -28,7 +28,7 @@ void add(string &s) {
     int v = 1;
     for (int i = 0; i < n; i++) {
         char c = s[i] - 'a';
-        if (to[c][v] == 0) {
+        if (to[c][v] == 0) { // if no transition
             to[c][v] = ++vn;
         }
         v = to[c][v]; // do transition
