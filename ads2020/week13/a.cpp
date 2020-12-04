@@ -47,7 +47,7 @@ int main() {
         q.pop();
         // relaxation
         for (int u : g[v]) {
-            if (d[u] == inf) {
+            if (d[u] < d[v] + 1) {
                 // go to v + use edge (v, u)
                 d[u] = d[v] + 1;
                 q.push(u);
