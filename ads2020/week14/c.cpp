@@ -31,7 +31,7 @@ int main() {
 
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= n; j++)
-            if (a[i][j] > 0)
+            if (a[i][j] > 0 || i == j)
                 f[i][j] = a[i][j];
             else
                 f[i][j] = inf;

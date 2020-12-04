@@ -17,16 +17,16 @@ typedef long long ll;
 const int N = (int)1e3 + 5;
 const int inf = (int)1e9;
 
-int n, m, pr[N];
-int mt[N]; // mt[v] = min edge from current spanning tree
+int n, m, pr[N], used[N];
+int min_e[N]; // min_e[v] = min edge from current spanning tree
 vector< pair<int,int> > g[N];
 
 int main() {
     /* Problem:
         Given weighted oriented graph.
-        Find the shortest path between vertex 1 and vertex n
+        Find minimal spanning tree (MST).
         \
-        DIJKSTRA algorithm in O(M logN)
+        MST, Prim algorithm in O(M logN)
     */
 
     cin >> n >> m;
@@ -39,47 +39,49 @@ int main() {
         
 
     for (int i = 1; i <= n; i++)
-        mt[i] = inf;
-    mt[1] = 0;
+        min_e[i] = inf;
+    min_e[1] = 0;
     pr[1] = -1;
 
 
-    // priority queue of (-d[v], v)
-    // -d[v] because we want to store mininmums instaed of maximums
+    // priority queue of (-min_e[v], v)
+    // -min_e[v] because we want to store mininmums instaed of maximums
     priority_queue< pair<int,int> > pq;
-    pq.push(make_pair(-mt[1], 1));
-    while(!pq.empty()) {
+    pq.push(make_pair(-min_e[1], 1));
 
-        // pick up v with min d[v]
-        pair<int,int> pp = pq.top();
-        int mtv = -pp.first; // dv > 0
-        int v = pp.second;
+    int mst = 0;
+    while(!pq.empty()) {
+        // pick up v with min min_e[v]
+        auto [min_ev, v] = pq.top();
+        min_ev = -min_ev; // min_ev > 0
         pq.pop();
 
-        if (mtv > mt[v]) continue;
-
-        // realaxition
+        // skip if not up-to-date info about v
+        if (min_ev > min_e[v]) {
+            continue;
+        }
+        // cout << v << ' ' << min_e[v] << "\n";
+        // vertex v now the member of the mst
+        used[v] = 1;
+        mst += min_e[v];
+        // do realaxition:
         // iterate over neighbours of v
         for (auto [u, w] : g[v]) { 
             // consider edge (v, u) with weight w
-            if (mt[u] > w) {
-                mt[u] = w;
-                pr[u] = v;
-                pq.push(make_pair(-mt[u], u));
+            if (!used[u] && min_e[u] > w) {
+                min_e[u] = w;
+                pr[u] = v; // remeber edge (v, u)
+
+                pq.push(make_pair(-min_e[u], u));
             }
         }
     }
-    int mst = 0;
-    vector<pair<int,int> > E;
-    for (int i = 1; i <= n; i++) {
-        mst += mt[i];
-        if (mt[i] != 0) {
-            E.push_back(mp(i, pr[i]));
-        }
-    }
+    
     cout << mst << "\n";
-    for (auto [u, v] : E) {
-        cout << u << ' ' << v << "\n";
+    for (int i = 1; i <= n; i++) {
+        if (min_e[i] != 0) {
+            cout << i << ' ' << pr[i] << "\n";
+        }
     }
 
     return 0;

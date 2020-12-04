@@ -34,8 +34,9 @@ int main() {
         int a, b, w;
         cin >> a >> b >> w;
         g[a].push_back(make_pair(b, w));
+        g[b].push_back(make_pair(a, w));
     }
-        
+
 
     for (int i = 1; i <= n; i++)
         d[i] = inf;
@@ -45,14 +46,15 @@ int main() {
     // -d[v] because we want to store mininmums instaed of maximums
     priority_queue< pair<int,int> > pq;
     pq.push(make_pair(-d[1], 1));
+
     while(!pq.empty()) {
 
         // pick up v with min d[v]
-        pair<int,int> pp = pq.top();
-        int dv = -pp.first; // dv > 0
-        int v = pp.second;
+        auto [dv, v] = pq.top();
+        dv = -dv; // dv > 0
         pq.pop();
 
+        // checking if it is up-to-date information about v
         if (dv > d[v]) continue;
 
         // realaxition
@@ -60,8 +62,9 @@ int main() {
         for (auto [u, w] : g[v]) { 
             if (d[u] > d[v] + w) {
                 d[u] = d[v] + w;
-                // remove old d[u] from pq and new one
                 pq.push(make_pair(-d[u], u));
+                // or remove old d[u] from data strcture and add new one
+                // this can be done with set for example
             }
         }
     }

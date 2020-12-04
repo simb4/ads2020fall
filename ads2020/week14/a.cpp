@@ -17,8 +17,8 @@ typedef long long ll;
 const int N = (int)1e3 + 5;
 const int inf = (int)1e9;
 
-int n, m, a[N][N];
-int d[N], used[N]; // array of shortest distances
+int n, m, a[N][N], used[N];
+int d[N]; // array of shortest distances
 
 int main() {
     /* Problem:
@@ -36,21 +36,25 @@ int main() {
         d[i] = inf;
     d[1] = 0;
 
+    // O(n)
     for (int s = 1; s <= n; s++) {
         // pick up the unporcessed vertex v
         // with smallest d[v] value
         int v = -1;
+        // O(n)
         for (int i = 1; i <= n; i++)
             if (!used[i] && (v == -1 || d[i] < d[v]))
                 v = i;
 
         if (v == -1) break;
+        // we found vertex with min d[v]
         used[v] = 1;
-
+        // do relaxation
         for (int u = 1; u <= n; u++)
             if (a[v][u] > 0)
                 d[u] = min(d[u], d[v] + a[v][u]);
     }
+    // O(n^2)
 
     for (int i = 1; i <= n; i++)
         cout << d[i] << ' ';
